@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz Día de la Primavera 🌸</title>
+<style>
+  :root{
+    --sky-top:#ffe9f3;
+    --sky-bottom:#fff3e0;
+    --text-color:#6b3f52;
+    --accent:#e67878;
+    --stem:#5a8f4f;
+    --leaf:#6fae5c;
+    --petal:#fdff9e;
+    --petal-dark:#eeff00;
+    --center:#ffd166;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;
+    margin:0;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  body{
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+    font-family:'Segoe UI', Verdana, Geneva, sans-serif;
+    color:var(--text-color);
+    overflow-x:hidden;
+    position:relative;
+    text-align:center;
+    padding:24px;
+  }
+
+  /* Pétalos cayendo de fondo */
+  .petal-fall{
+    position:fixed;
+    top:-10%;
+    font-size:20px;
+    opacity:0.8;
+    pointer-events:none;
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    z-index:0;
+    user-select:none;
+  }
+  @keyframes fall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0.9; }
+    100%{ transform:translateY(110vh) rotate(360deg); opacity:0.4; }
+  }
+
+  .content{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    max-width:520px;
+  }
+
+  h1{
+    font-size:clamp(1.6rem, 5vw, 2.4rem);
+    margin:0 0 8px 0;
+    opacity:0;
+    animation:fadeUp 1.2s ease-out 2.6s forwards;
+    line-height:1.3;
+  }
+
+  p.msg{
+    font-size:clamp(1.05rem, 3.5vw, 1.3rem);
+    margin:0 0 28px 0;
+    opacity:0;
+    animation:fadeUp 1.2s ease-out 3.3s forwards;
+    line-height:1.5;
+  }
+
+  p.msg .heart{
+    color:var(--accent);
+    font-size:1.1em;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* Contenedor de la flor */
+  .flower-wrap{
+    width:min(70vw, 260px);
+    height:min(70vw, 260px);
+    margin-bottom:8px;
+  }
+
+  svg{ width:100%; height:100%; overflow:visible; }
+
+  /* Tallo crece de abajo hacia arriba */
+  .stem{
+    stroke:var(--stem);
+    stroke-width:6;
+    stroke-linecap:round;
+    fill:none;
+    stroke-dasharray:200;
+    stroke-dashoffset:200;
+    animation:growStem 1.4s ease-out 0.2s forwards;
+  }
+  @keyframes growStem{
+    to{ stroke-dashoffset:0; }
+  }
+
+  /* Hojas aparecen después del tallo */
+  .leaf{
+    fill:var(--leaf);
+    opacity:0;
+    transform-origin:center;
+    transform:scale(0);
+    animation:popLeaf 0.6s ease-out forwards;
+  }
+  .leaf-left{ animation-delay:1.1s; }
+  .leaf-right{ animation-delay:1.3s; }
+  @keyframes popLeaf{
+    to{ opacity:1; transform:scale(1); }
+  }
+
+  /* Pétalos abren uno a uno */
+  .petal{
+    fill:var(--petal);
+    opacity:0;
+    transform-origin:160px 150px;
+    transform:scale(0.2) rotate(var(--rot));
+    animation:bloom 0.7s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .petal:nth-of-type(1){ animation-delay:1.6s; }
+  .petal:nth-of-type(2){ animation-delay:1.75s; }
+  .petal:nth-of-type(3){ animation-delay:1.9s; }
+  .petal:nth-of-type(4){ animation-delay:2.05s; }
+  .petal:nth-of-type(5){ animation-delay:2.2s; }
+  .petal:nth-of-type(6){ animation-delay:2.35s; }
+  @keyframes bloom{
+    to{ opacity:1; transform:scale(1) rotate(var(--rot)); }
+  }
+
+  .center{
+    fill:var(--center);
+    opacity:0;
+    transform-origin:160px 150px;
+    transform:scale(0);
+    animation:popCenter 0.5s ease-out 2.45s forwards;
+  }
+  @keyframes popCenter{
+    to{ opacity:1; transform:scale(1); }
+  }
+
+  .footer-note{
+    margin-top:18px;
+    font-size:0.85rem;
+    opacity:0;
+    color:var(--text-color);
+    animation:fadeUp 1s ease-out 4s forwards;
+  }
+</style>
+</head>
+<body>
+
+  <div class="content">
+    <div class="flower-wrap">
+      <svg viewBox="0 0 320 320">
+        <!-- Tallo -->
+        <path class="stem" d="M160,300 C160,240 160,200 160,155" />
+
+        <!-- Hojas -->
+        <path class="leaf leaf-left" d="M160,230 C120,220 105,195 115,175 C140,180 160,200 160,230 Z" />
+        <path class="leaf leaf-right" d="M160,255 C205,245 220,220 210,200 C185,205 160,225 160,255 Z" />
+
+        <!-- Pétalos (6, rotados alrededor del centro 160,150) -->
+        <g>
+          <ellipse class="petal" style="--rot:0deg"   cx="160" cy="105" rx="26" ry="46" />
+          <ellipse class="petal" style="--rot:60deg"  cx="160" cy="105" rx="26" ry="46" />
+          <ellipse class="petal" style="--rot:120deg" cx="160" cy="105" rx="26" ry="46" />
+          <ellipse class="petal" style="--rot:180deg" cx="160" cy="105" rx="26" ry="46" />
+          <ellipse class="petal" style="--rot:240deg" cx="160" cy="105" rx="26" ry="46" />
+          <ellipse class="petal" style="--rot:300deg" cx="160" cy="105" rx="26" ry="46" />
+        </g>
+
+        <!-- Centro -->
+        <circle class="center" cx="160" cy="150" r="22" />
+      </svg>
+    </div>
+
+    <h1>Feliz Día de la Primavera 🌷</h1>
+    <p class="msg">Hoy no pude darte tu florcita amol, espero dartela mañana junto con más regalitos <span class="heart">♥</span></p>
+    <p class="footer-note">—Muak te amo mi amor.</p>
+    <p class="footer-note">De: Edu     Para: Day </p>
+  </div>
+
+<script>
+  // Genera pétalos cayendo de fondo
+  const emojis = ['🌸','🌷','🌼','💮'];
+  const container = document.body;
+  for(let i=0;i<18;i++){
+    const el = document.createElement('div');
+    el.className='petal-fall';
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left = Math.random()*100 + 'vw';
+    const duration = 8 + Math.random()*8;
+    el.style.animationDuration = duration + 's';
+    el.style.animationDelay = (Math.random()*10) + 's';
+    el.style.fontSize = (14 + Math.random()*14) + 'px';
+    container.appendChild(el);
+  }
+</script>
+
+</body>
+</html>
